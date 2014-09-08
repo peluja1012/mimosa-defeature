@@ -8,7 +8,7 @@ For more information regarding mimosa, see http://mimosa.io
 Usage
 =====
 
-Add `'defeature'` to your list of modules. Mimosa will install the module for you on start up.
+Add `'defeature'` to your list of modules. Mimosa will install the module for you on start up. For a detailed example of how to use this module, refer to [this](https://github.com/peluja1012/MimosaEmberSkeleton) sample project.
 
 Flagging features
 =========================
