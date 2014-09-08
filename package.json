@@ -1,0 +1,36 @@
+{
+  "name": "mimosa-defeature",
+  "version": "0.1.0",
+  "homepage": "https://github.com/peluja1012/mimosa-defeature",
+  "author": "Pedro Jaramillo",
+  "description": "A mimosa module for flagging features and removing them from a project build",
+  "contributors": [
+    {
+      "name": "Pedro Jaramillo",
+      "email": ""
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peluja1012/mimosa-defeature"
+  },
+  "keywords": [
+    "mimosa",
+    "mmodule",
+    "feature",
+    "defeature"
+  ],
+  "dependencies": {
+    "lodash": "2.4.1",
+    "rocambole": "git://github.com/millermedeiros/rocambole#v0.3.6",
+    "rocambole-token": "1.2.1"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "main": "./src/index",
+  "scripts": {
+    "prepublish": "mimosa build"
+  }
+}
