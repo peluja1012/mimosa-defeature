@@ -199,7 +199,7 @@ If both `master` and `child` are present, `defeature` will perform a smart merge
 Default Config
 ======
 
-```json
+```
 defeature: {
   folder: "feature",
   features: {
@@ -212,7 +212,7 @@ defeature: {
 Example Config
 ==============
 
-```json
+```
 defeature: {
   folder: "feature",
   features: {
