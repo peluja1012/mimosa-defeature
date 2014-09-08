@@ -41,7 +41,7 @@ var getRangesToRemove = function(opts) {
   var rangesToRemove = [];
   excludedFeatures.forEach(function(featureName) {
     var featureMatcher = new RegExp(startCommentText + " feature .*?" + featureName + ".*? " + endCommentText + "[\\s]*?\\n", "g");
-    var endTagMatcher = new RegExp(startCommentText + " feature .*?" + featureName + ":end.*? " + endCommentText + "[\\s]*?\\n");
+    var endTagMatcher = new RegExp(startCommentText + " feature .*?" + featureName + ":end.*? " + endCommentText + "[\\s]*?(?:\\n|$)");
     var nextLineMatcher = new RegExp(".*?\\n");
     var featureCommentStartMatcher = new RegExp(startCommentText + " feature ");
     var featureCommentEndMatcher = new RegExp(" " + endCommentText + "[\\s]*\\n");
