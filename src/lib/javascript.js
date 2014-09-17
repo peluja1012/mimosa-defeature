@@ -36,12 +36,13 @@ var _commentOutEntireFile = function(ast, tokensToRemove) {
     if(token.type === 'BlockComment') {
       token.raw = token.raw.replace(/\n/g, "\n//");
     }
-    if(!token.prev || rocamboleToken.isBr(token.prev)) {
+
+    if(rocamboleToken.isBr(token.next)) {
       var newToken = {
         type : 'Custom', // can be anything (not used internally)
         value : '// '
       };
-      rocamboleToken.before(token, newToken);
+      rocamboleToken.after(token.next, newToken);
     }
   });
 };
@@ -129,12 +130,12 @@ var _commentOutExcludedFeatures = function(ast, includedFeatures, excludedFeatur
         if(token.type === 'BlockComment') {
           token.raw = token.raw.replace(/\n/g, "\n//");
         }
-        if(rocamboleToken.isBr(token.prev)) {
+        if(rocamboleToken.isBr(token.next)) {
           var newToken = {
             type : 'Custom', // can be anything (not used internally)
             value : '// '
           };
-          rocamboleToken.before(token, newToken);
+          rocamboleToken.after(token.next, newToken);
           newCommentTokens.push(newToken);
 
           // Stop commenting single line features
@@ -164,7 +165,7 @@ var _defeature = function( mimosaConfig, options, next ) {
       for (var i = 0; i < excludedFeatures.length; i++) {
         var featureName = excludedFeatures[i];
         var featureMatcher = new RegExp("/\\* feature .*?"+ featureName + ".*? \\*/", "g");
-        if(featureMatcher.test(file.outputFileText)) {
+        if(featureMatcher.test(file.inputFileText)) {
           shouldDefeatureFile = true;
           break;
         }
@@ -172,9 +173,9 @@ var _defeature = function( mimosaConfig, options, next ) {
 
       if(shouldDefeatureFile) {
         try {
-          var ast = rocambole.parse(file.outputFileText);
+          var ast = rocambole.parse(file.inputFileText);
           _commentOutExcludedFeatures(ast, includedFeatures, excludedFeatures);
-          file.outputFileText = ast.toString();
+          file.inputFileText = ast.toString();
         } catch(error) {
           logger.error("Unable to defeature file [[ " + file.outputFileName + " ]] due to parsing errors ", error);
         }
@@ -191,7 +192,7 @@ exports.registration = function( mimosaConfig, register ) {
   var exts = mimosaConfig.extensions.javascript;
   register(
     ['add', 'update', 'remove', 'buildFile'],
-    'afterCompile',
+    'afterRead',
     _defeature,
     exts
   );
