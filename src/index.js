@@ -12,8 +12,15 @@ var defeatureModules = [template, css, javascript];
 
 var _prepareFeatures = function(mimosaConfig, options, next) {
   var masterFilePath = path.join(mimosaConfig.defeature.folderFull, mimosaConfig.defeature.features.master);
-  var childFilePath = path.join(mimosaConfig.defeature.folderFull, mimosaConfig.defeature.features.child);
-  var flattenedFeaturesObj = fileUtils.flattenFeaturesObj(fileUtils.mergeFeatureFiles(masterFilePath, childFilePath));
+  var flattenedFeaturesObj;
+  if (mimosaConfig.defeature.features.child) {
+    var childFilePath = path.join(mimosaConfig.defeature.folderFull, mimosaConfig.defeature.features.child);
+    flattenedFeaturesObj = fileUtils.flattenFeaturesObj(fileUtils.mergeFeatureFiles(masterFilePath, childFilePath));
+  } else {
+    var masterFeaturesObj = require(masterFilePath);
+    flattenedFeaturesObj = fileUtils.flattenFeaturesObj(masterFeaturesObj);
+  }
+
   var includedFeatures = _.keys(_.pick(flattenedFeaturesObj, function(val, key) {
                           return val === true;
                         }));
@@ -28,12 +35,10 @@ var _prepareFeatures = function(mimosaConfig, options, next) {
 };
 
 var registration = function( mimosaConfig, register ) {
-  if (mimosaConfig.defeature.features.child) {
-    register(['preBuild'], "init", _prepareFeatures);
-    defeatureModules.forEach( function( mod ) {
-      mod.registration( mimosaConfig, register );
-    });
-  }
+  register(['preBuild'], "init", _prepareFeatures);
+  defeatureModules.forEach( function( mod ) {
+    mod.registration( mimosaConfig, register );
+  });
 };
 
 module.exports = {
