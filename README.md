@@ -28,6 +28,8 @@ You can flag javascript, css, and template code as features. In general, you can
 ### CSS ###
 The `defeature` module will allow you to defeature plain css files as well as Sass files. You will also be able to use `defeature` with other CSS preprocessors as long as the `@import` behaviour for partials is similar to Sass. One important thing to note when using CSS preprocessors is that the `:file` optional flag will not work as expected so it's best to avoid it. Additionally, when using CSS preprocessors, using a feature comment with no optional flags above an '@import' line will not work as expected, as it will NOT feature flag the entire partial being imported, but instead it will feature flag the first line of the partial.
 
+**Note:** The `defeature` module will replace unwanted feature flagged CSS code with empty space (new line characters equaling in number to the lines in the original code). This is done in order for source maps to work as expected when using CSS preprocessors.
+
 Examples:
 
 ```css
