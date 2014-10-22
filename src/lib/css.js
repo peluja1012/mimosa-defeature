@@ -22,7 +22,13 @@ var _defeature = function( mimosaConfig, options, next ) {
       var rangesToRemove = regexDefeatureUtils.mergeOverlappingRanges(regexDefeatureUtils.getRangesToRemove(opts));
       if(rangesToRemove.length > 0) {
         rangesToRemove.forEach(function(range) {
-          finalSource += source.slice(start, range[0]);
+          var sourceToDelete = source.substring(range[0], range[1]);
+          var linesToDelete = sourceToDelete.split('\n');
+          var newLineSource = linesToDelete.reduce(function(previous) {
+            return previous + "\n";
+          }, '');
+          
+          finalSource += source.slice(start, range[0]) + newLineSource;
           start = range[1];
         });
         finalSource += source.slice(start, source.length);
