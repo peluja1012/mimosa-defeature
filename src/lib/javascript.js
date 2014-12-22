@@ -23,6 +23,22 @@ var _stripTagsFromFeatureText = function(featureText) {
  return featureText.replace(':start', '').replace(':end', '').replace(':file', '');
 };
 
+var _processBrToken = function(token) {
+  var newTokenValue = '// ';
+  // No trailing whitespace on last line
+  // or on any empty lines
+  if (!token.next.next || rocamboleToken.isBr(token.next.next)) {
+    newTokenValue = '//';
+  }
+  var newToken = {
+    type : 'Custom', // can be anything (not used internally)
+    value : newTokenValue
+  };
+  rocamboleToken.after(token.next, newToken);
+
+  return newToken;
+};
+
 var _commentOutEntireFile = function(ast, tokensToRemove) {
   // Remove comment tokens that have been previously added
   if(tokensToRemove) {
@@ -38,11 +54,7 @@ var _commentOutEntireFile = function(ast, tokensToRemove) {
     }
 
     if(rocamboleToken.isBr(token.next)) {
-      var newToken = {
-        type : 'Custom', // can be anything (not used internally)
-        value : '// '
-      };
-      rocamboleToken.after(token.next, newToken);
+      _processBrToken(token);
     }
   });
 };
@@ -68,7 +80,7 @@ var _commentOutExcludedFeatures = function(ast, includedFeatures, excludedFeatur
           // Iterate over all of the features that are mentioned in the comment
           for (var i = 0; i < fNameList.length; i++) {
             var fName = fNameList[i];
-            var shouldExcludeFeature = excludedFeatures.indexOf(_stripTagsFromFeatureText(fName)) !== -1 && 
+            var shouldExcludeFeature = excludedFeatures.indexOf(_stripTagsFromFeatureText(fName)) !== -1 &&
                                       !containsIncludedFeature;
 
             // Only comment out feature if it's in the exludedFeatures array AND the comment doesn't mention any features that
@@ -120,7 +132,7 @@ var _commentOutExcludedFeatures = function(ast, includedFeatures, excludedFeatur
             }
 
           }
-        }        
+        }
       }
 
       // Actually comment out the line
@@ -131,11 +143,7 @@ var _commentOutExcludedFeatures = function(ast, includedFeatures, excludedFeatur
           token.raw = token.raw.replace(/\n/g, "\n//");
         }
         if(rocamboleToken.isBr(token.next)) {
-          var newToken = {
-            type : 'Custom', // can be anything (not used internally)
-            value : '// '
-          };
-          rocamboleToken.after(token.next, newToken);
+          var newToken = _processBrToken(token);
           newCommentTokens.push(newToken);
 
           // Stop commenting single line features
