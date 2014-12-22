@@ -1,6 +1,6 @@
 {
   "name": "mimosa-defeature",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "https://github.com/peluja1012/mimosa-defeature",
   "author": "Pedro Jaramillo",
   "description": "A mimosa module for flagging features and removing them from a project build",
