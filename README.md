@@ -26,7 +26,7 @@ You can flag javascript, css, and template code as features. In general, you can
   * `file` Signals that the entire file is part of a feature
 
 ### CSS ###
-The `defeature` module will allow you to defeature plain css files as well as Sass files. You will also be able to use `defeature` with other CSS preprocessors as long as the `@import` behaviour for partials is similar to Sass. One important thing to note when using CSS preprocessors is that the `:file` optional flag will not work as expected so it's best to avoid it. Additionally, when using CSS preprocessors, using a feature comment with no optional flags above an '@import' line will not work as expected, as it will NOT feature flag the entire partial being imported, but instead it will feature flag the first line of the partial.
+The `defeature` module will allow you to defeature plain CSS files as well as SASS files. You will also be able to use `defeature` with other CSS preprocessors as long as the `@import` behaviour for partials is similar to SASS. One important thing to note when using CSS preprocessors is that the `:file` optional flag will not work as expected so it's best to avoid it. Additionally, when using CSS preprocessors, using a feature comment with no optional flags above an '@import' line will not work as expected, as it will NOT feature flag the entire partial being imported, but instead it will feature flag the first line of the partial.
 
 **Note:** The `defeature` module will replace unwanted feature flagged CSS code with empty space (new line characters equaling in number to the lines in the original code). This is done in order for source maps to work as expected when using CSS preprocessors.
 
@@ -142,7 +142,7 @@ Examples:
 Removing features
 =================
 
-Then inclusion or exclusion of features depends on the values present in your `master` and `child` files, which you can specify in the module config. Nested features will result in hyphenated feature names. 
+Then inclusion or exclusion of features depends on the values present in your `master` and `child` files, which you can specify in the module config. Nested features will result in hyphenated feature names.
 
 Examples
 
@@ -192,7 +192,7 @@ The following features will be excluded from the build: 'foo-geo-overlay', 'foo-
 Functionality
 =============
 
-The `defeature` module will remove flagged features from your source code. The module will use `master` and `child` files to determine which features to remove. These files should be in `json` format. The module will look for these files in the `folder` that you specify in the config. You should specify a `child` file if different versions of your application will have different features. Usually, you'll have one child file per version of your app. You can use `mimosa` profiles to switch between versions. 
+The `defeature` module will remove flagged features from your source code. The module will use `master` and `child` files to determine which features to remove. These files should be in `json` format. The module will look for these files in the `folder` that you specify in the config. You should specify a `child` file if different versions of your application will have different features. Usually, you'll have one child file per version of your app. You can use `mimosa` profiles to switch between versions.
 
 If both `master` and `child` are present, `defeature` will perform a smart merge of the two files to determine the final feature list. If only `master` is present, it will use the values in `master` to determine the final feature list. You can nest features in both `master` and `child` files.
 
@@ -207,9 +207,27 @@ defeature: {
   features: {
     master: "master",
     child: null
+  },
+  removeFileDefeatures: {
+    css: true,
+    template: true,
+    javascript: true
   }
 }
 ```
+
+#### `removeFileDefeatures` object
+An object indicating when the defeaturing of a file should result in that file being excluded from output.
+
+#### `removeFileDefeatures.css` boolean
+A flag, when set to `true` (which is the default), will result in the javascript file not being processed any further.  
+
+#### `removeFileDefeatures.template` boolean
+A flag, when set to `true` (which is the default), will result in the template file being excluded from template processing, which means it will not be merged together by any of Mimosa's template compilers.
+
+#### `removeFileDefeatures.javascript` boolean
+A flag, when set to `true` (which is the default), will result in the CSS/SASS file not being processed/written.
+
 
 Example Config
 ==============
