@@ -220,13 +220,13 @@ defeature: {
 An object indicating when the defeaturing of a file should result in that file being excluded from output.
 
 #### `removeFileDefeatures.css` boolean
-A flag, when set to `true` (which is the default), will result in the javascript file not being processed any further.  
+A flag, when set to `true` (which is the default), will result in the CSS/SASS file not being processed/written.
 
 #### `removeFileDefeatures.template` boolean
-A flag, when set to `true` (which is the default), will result in the template file being excluded from template processing, which means it will not be merged together by any of Mimosa's template compilers.
+A flag, when set to `true` (which is the default), will result in the template file being excluded from template processing, which means it will not be merged together by any of Mimosa's template compilers.  If set to `false`, defeature will retain `file` excluded templates, and those templates will be used by Mimosa's template compilers as contentless.
 
 #### `removeFileDefeatures.javascript` boolean
-A flag, when set to `true` (which is the default), will result in the CSS/SASS file not being processed/written.
+A flag, when set to `true` (which is the default), will result in the javascript file not being processed any further.  
 
 
 Example Config
