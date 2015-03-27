@@ -7,10 +7,10 @@ var logger = null;
 var _defeature = function( mimosaConfig, options, next ) {
   if ( options.files && options.files.length ) {
 
-    // if need to remove blank templates, set up newFiles array
-    var newFiles;
+    // if need to remove blank templates, set up keepFiles array
+    var keepFiles;
     if (mimosaConfig.defeature.removeFileDefeatures.template) {
-      newFiles = [];
+      keepFiles = [];
     }
 
     options.files.forEach( function( file ) {
@@ -34,23 +34,24 @@ var _defeature = function( mimosaConfig, options, next ) {
         });
         finalSource += source.slice(start, source.length);
         file.inputFileText = finalSource;
-        // newFiles array exists, and the file has content
-        // add file to newFiles.  This leaves out any files
+        // keepFiles array exists, and the file has content
+        // add file to keepFiles.  This leaves out any files
         // that have length = 0.
-        if(newFiles && finalSource.length && finalSource.length > 0) {
-          newFiles.push(file);
+        if(keepFiles && finalSource.length && finalSource.length > 0) {
+          keepFiles.push(file);
         }
       } else {
-        // no updates, leave it alone
-        if(newFiles) {
-          newFiles.push(file);
+        // if removing files, need to put unchanged files into list
+        // of files to keep
+        if(keepFiles) {
+          keepFiles.push(file);
         }
       }
     });
 
-    // if newfiles, reset file list.
-    if(newFiles) {
-      options.files = newFiles;
+    // if removing files, reset file list.
+    if(keepFiles) {
+      options.files = keepFiles;
     }
   }
 
