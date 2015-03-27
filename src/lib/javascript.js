@@ -59,7 +59,7 @@ var _commentOutEntireFile = function(ast, tokensToRemove) {
   });
 };
 
-var _commentOutExcludedFeatures = function(ast, includedFeatures, excludedFeatures) {
+var _commentOutExcludedFeatures = function(mimosaConfig, ast, includedFeatures, excludedFeatures) {
     // Keeps track of whether a particular feature should be commented out or not as we iterate
     // over all the tokens
     var featureStatusList = [];
@@ -158,12 +158,22 @@ var _commentOutExcludedFeatures = function(ast, includedFeatures, excludedFeatur
     });
 
     if(shouldCommentOutEntireFile) {
+      // if its a file exclude, and we are not writing
+      // files that have file exclude, just return false...
+      if (mimosaConfig.defeature.removeFileDefeatures.javascript) {
+        return false;
+      }
+
+      // ...otherwise comment out entire file
       _commentOutEntireFile(ast, newCommentTokens);
     }
+
+    return true;
 };
 
 var _defeature = function( mimosaConfig, options, next ) {
   if ( !options.isVendor && options.files && options.files.length ) {
+    var keepFiles = [];
     options.files.forEach( function( file ) {
       var includedFeatures = mimosaConfig.defeature.includedFeatures;
       var excludedFeatures = mimosaConfig.defeature.excludedFeatures;
@@ -179,17 +189,32 @@ var _defeature = function( mimosaConfig, options, next ) {
         }
       }
 
+      var keep = true;
       if(shouldDefeatureFile) {
         try {
           var ast = rocambole.parse(file.inputFileText);
-          _commentOutExcludedFeatures(ast, includedFeatures, excludedFeatures);
-          file.inputFileText = ast.toString();
+          var keepFile = _commentOutExcludedFeatures(mimosaConfig, ast, includedFeatures, excludedFeatures);
+
+          // _commentOutExcludedFeatures will return false if the file has been
+          // file defeatured and should not be written
+          if (keepFile) {
+            file.inputFileText = ast.toString();
+          } else {
+            keep = false;
+          }
         } catch(error) {
           logger.error("Unable to defeature file [[ " + file.outputFileName + " ]] due to parsing errors ", error);
         }
       }
 
+      // only keeping files that need to be written
+      if (keep) {
+        keepFiles.push(file);
+      }
+
     });
+
+    options.files = keepFiles;
   }
 
   next();
