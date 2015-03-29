@@ -6,7 +6,14 @@ var logger = null;
 
 var _defeature = function( mimosaConfig, options, next ) {
   if ( options.files && options.files.length ) {
-    options.files.forEach( function( file ) { 
+
+    // if need to remove blank templates, set up keepFiles array
+    var keepFiles;
+    if (mimosaConfig.defeature.removeFileDefeatures.template) {
+      keepFiles = [];
+    }
+
+    options.files.forEach( function( file ) {
       // remove ranges from source
       var finalSource = "";
       var source = file.inputFileText;
@@ -27,8 +34,25 @@ var _defeature = function( mimosaConfig, options, next ) {
         });
         finalSource += source.slice(start, source.length);
         file.inputFileText = finalSource;
+        // keepFiles array exists, and the file has content
+        // add file to keepFiles.  This leaves out any files
+        // that have length = 0.
+        if(keepFiles && finalSource.length && finalSource.length > 0) {
+          keepFiles.push(file);
+        }
+      } else {
+        // if removing files, need to put unchanged files into list
+        // of files to keep
+        if(keepFiles) {
+          keepFiles.push(file);
+        }
       }
     });
+
+    // if removing files, reset file list.
+    if(keepFiles) {
+      options.files = keepFiles;
+    }
   }
 
   next();
