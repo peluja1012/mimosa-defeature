@@ -198,6 +198,10 @@ If both `master` and `child` are present, `defeature` will perform a smart merge
 
 `mimosa` will remove features when your run `mimosa watch` or `mimosa build`.
 
+## `build` v `watch` exclusion
+
+A feature called `mimosa-build-exclude` is automatically recognized by mimosa-defeature. This included feature allows for excluding features based on whether Mimosa is running a `watch` or a `build`.  When running a `build`, all code using the `mimosa-build-exclude` feature flag will be removed/commented.
+
 Default Config
 ======
 

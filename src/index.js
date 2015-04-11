@@ -31,6 +31,15 @@ var _prepareFeatures = function(mimosaConfig, options, next) {
   mimosaConfig.defeature.includedFeatures = includedFeatures;
   mimosaConfig.defeature.excludedFeatures = excludedFeatures;
 
+  // when running a build, add feature that
+  // allows defeaturing to be build v watch specific
+  // Allows for leaving things in for dev that need removing for build
+  if (mimosaConfig.isBuild) {
+    excludedFeatures.push("mimosa-build-exclude");
+  } else {
+    includedFeatures.push("mimosa-build-exclude");
+  }
+
   next();
 };
 
