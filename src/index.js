@@ -40,6 +40,16 @@ var _prepareFeatures = function(mimosaConfig, options, next) {
     includedFeatures.push("mimosa-build-exclude");
   }
 
+  // allow for defeaturing based on NODE_ENV
+  // lets someone pick/choose lines of code based
+  // on destination. Assume not production unless
+  // explicitly defined
+  if(process.env.NODE_ENV && process.env.NODE_ENV === "production") {
+    includedFeatures.push("environment-production");
+  } else {
+    excludedFeatures.push("environment-production");
+  }
+
   next();
 };
 
