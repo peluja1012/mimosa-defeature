@@ -1,3 +1,18 @@
+v1.0.2
+------
+
+This release adds a feature called `environment-production`, which is automatically recognized
+when `NODE_ENV` is set to `production`.
+
+
+v1.0.1
+------
+
+This release adds a feature called `mimosa-build-exclude`, which is automatically recognized. 
+
+This allows for excluding features based on whether Mimosa is running a `watch` or a `build`.
+When running a `build`, all code using the `mimosa-build-exclude` feature flag will be removed/commented.
+
 v1.0.0
 ------
 
@@ -13,11 +28,3 @@ These flags, `removeFileDefeatures.javascript` and
 `removeFileDefeatures.template`, are set to `true` by default and can be
 overriden in the plugin config. Set these flags to `false` if you want the
 plugin to behave the same as before. Thanks @dbashford for this improvement.
-
-v1.0.1
-------
-
-This release adds a feature called `mimosa-build-exclude`, which is automatically recognized. 
-
-This allows for excluding features based on whether Mimosa is running a `watch` or a `build`.
-When running a `build`, all code using the `mimosa-build-exclude` feature flag will be removed/commented.
