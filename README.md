@@ -202,6 +202,10 @@ If both `master` and `child` are present, `defeature` will perform a smart merge
 
 A feature called `mimosa-build-exclude` is automatically recognized by mimosa-defeature. This included feature allows for excluding features based on whether Mimosa is running a `watch` or a `build`.  When running a `build`, all code using the `mimosa-build-exclude` feature flag will be removed/commented.
 
+## `NODE_ENV=production`
+
+An `environment-production` feature is automatically __included__ if `NODE_ENV` is set to `production`.  Otherwise the `environment-production` feature is automatically __excluded__.
+
 Default Config
 ======
 
