@@ -192,7 +192,7 @@ var _defeature = function( mimosaConfig, options, next ) {
       var keep = true;
       if(shouldDefeatureFile) {
         try {
-          var ast = rocambole.parse(file.inputFileText);
+          var ast = rocambole.parse(file.inputFileText, { sourceType: "module" });
           var keepFile = _commentOutExcludedFeatures(mimosaConfig, ast, includedFeatures, excludedFeatures);
 
           // _commentOutExcludedFeatures will return false if the file has been
