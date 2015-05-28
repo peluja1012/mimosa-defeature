@@ -1,3 +1,9 @@
+v1.1.0
+------
+
+This release upgrades the `rocambole` dependency to `0.6`, which uses `esprima 2.0`. `esprima 2.0` introduces 
+many stable ES6 features.
+
 v1.0.2
 ------
 
